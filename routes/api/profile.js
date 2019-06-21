@@ -2,13 +2,11 @@
 const express = require('express');
 const router = express.Router();
 
-// get: browser is asking for data.
-// post: save information.
 
-// When user comes to "test", I'm going to request~ ~~ key will be msg.
+// When a user comes to "/test (sub route)", I'm going to get the request, and send the response back in the JSON format. A key will be a msg, a value will be “User works!”. So, this is going to send back to the client.
 router.get('/test', (req, res) => res.json({
  msg: 'Profile works!'
 }));
 
-// I need to export evertying in my routers.
+// I need to export evertying from my routers.
 module.exports = router;
