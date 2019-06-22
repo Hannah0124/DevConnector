@@ -7,6 +7,9 @@ const router = express.Router();
 const User = require('../../models/User');
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const keys = require('../../config/keys');
+const passport = require('passport');
 
 // =========
 
@@ -80,10 +83,53 @@ router.post('/login', (req,res) => {
           email: 'User not found'
         });
       }
+
+      // Check password by using bcrypt library.
+      // password = plaint pw
+      // user.password = hased pw 
+      bcrypt.compare(password, user.password)
+        .then(isMatch => {
+          if (isMatch) {
+            // User matched 
+            const payload = {
+              id: user.id,
+              name: user.name,
+              avatar: user.avatar
+            };
+
+            // Ask Jwt to sign a token  (we need to sign in with payload.)
+            // When do I want this token to be expired?
+            jwt.sign(
+                payload, 
+                keys.secretOrKey,
+                {expiresIn: 3600},
+                // Error will tell you if you fail.
+                // If I get the token, it will say "Bearer ~"
+                (err, token) => {
+                  // print out what the token looks like.
+                  return res.json({
+                    success: true,
+                    token: 'Bearer ' + token
+                  });
+                }
+              );
+          } else {
+            return res.status(400).json({password: 'Password incorrect'});
+          }
+        })
     })
     .catch(err => console.log(err));
 })
 
+
+// @route   GET api/users/current
+// @desc    Return current user
+// @access  private
+// Start writing my API.
+// I'm expenting a token at this point. (passport)
+router.get('/current', passport.authenticate('jwt', {session: false}), (req, res) => {
+  res.json({msg: 'Success'});
+})
 
 // I want to export everything from my routers because this is the only thing in this file.
 module.exports = router;

@@ -7,6 +7,7 @@ const posts = require('./routes/api/posts');
 // Bring in my body parser.
 // If we bring it here (server.js), we don’t need to do every JS files.
 const bodyParser = require('body-parser');
+const passport = require('passport');
 
 // Create an instance of the express() to tell my route to go to.
 // So you bring in everything from express().
@@ -23,7 +24,16 @@ const db = require('./config/keys').mongoURI;
 // Promise statement: .then().catch()
 // .then(): promise (When it succeeds~)
 // .catch(): In case, it fails, check what my error looks like.
-mongoose.connect(db).then(() => console.log('MongoDb connected')).catch(err => console.log(err));
+mongoose.connect(db)
+  .then(() => console.log('MongoDb connected'))
+  .catch(err => console.log(err));
+
+// Passport middleware 
+app.use(passport.initialize());
+
+// Passport config (configuration)
+require('./config/passport')(passport);
+
 
 // Create the first route.
 // Go to <app (= express)>, add the route called <get> and say..
