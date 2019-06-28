@@ -22,18 +22,28 @@ const passport = require('passport');
 // }));
 // =========
 
+// Load input validation
+const validateRegisterInput = require('../../validation/register');
+const validateloginInput = require('../../validation/login');
+
 // @route POST api/users/register 
 // @desc Register user
 // @access Public
 // Start writing my API.
 router.post('/register', (req, res) => {
+  const {errors, isValid} =  validateRegisterInput(req.body);
+  // Check validation
+  if (!isValid) {
+    return res.status(400).json(errors)
+  }
+
+
   // When I check email, I will check if there is an email already or not.
   // email should match with the property name.
   User.findOne({email: req.body.email}).then(user => {
     if (user) {
-      return res.status(400).json({ // 400 bad request??
-        email: 'Email already exists'
-      })
+      errors.email = 'Email already exists';
+      return res.status(400).json(errors)
     } else {
       const avatar = gravatar.url(req.body.email, {
         s: '200', // size
@@ -72,21 +82,26 @@ router.post('/register', (req, res) => {
 // @access Public
 // Start writing my API.
 router.post('/login', (req,res) => {
+  const {errors, isValid} =  validateloginInput(req.body);
+  // Check validation
+  if (!isValid) {
+    return res.status(400).json(errors)
+  }
+
   const email = req.body.email;
   const password = req.body.password; 
 
   // Find user by email.
+  // (Check database if the user exists.)
   User.findOne({email})
     .then(user => {
       if (!user) {
-        return res.status(404).json({
-          email: 'User not found'
-        });
+        errors.email = "User not found";
+        return res.status(404).json(errors);
       }
 
-      // Check password by using bcrypt library.
-      // password = plaint pw
-      // user.password = hased pw 
+      // Check password (by using bcrypt library).
+      // password = plain pw <--> user.password = hased pw 
       bcrypt.compare(password, user.password)
         .then(isMatch => {
           if (isMatch) {
@@ -103,7 +118,7 @@ router.post('/login', (req,res) => {
                 payload, 
                 keys.secretOrKey,
                 {expiresIn: 3600},
-                // Error will tell you if you fail.
+                // Error will tell you if it failes.
                 // If I get the token, it will say "Bearer ~"
                 (err, token) => {
                   // print out what the token looks like.
@@ -114,7 +129,8 @@ router.post('/login', (req,res) => {
                 }
               );
           } else {
-            return res.status(400).json({password: 'Password incorrect'});
+            errors.password = "Password incorrect";
+            return res.status(400).json(errors);
           }
         })
     })
@@ -126,9 +142,9 @@ router.post('/login', (req,res) => {
 // @desc    Return current user
 // @access  private
 // Start writing my API.
-// I'm expenting a token at this point. (passport)
+// I'm expecting a token at this point. (passport)
 router.get('/current', passport.authenticate('jwt', {session: false}), (req, res) => {
-  res.json({msg: 'Success'});
+  res.json(req.user);
 })
 
 // I want to export everything from my routers because this is the only thing in this file.
