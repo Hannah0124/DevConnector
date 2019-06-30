@@ -22,7 +22,7 @@ router.get('/',
     const errors = {};
 
     Profile.findOne({user: req.user.id})
-      .populate('user', ['name', 'avatar'])
+      .populate('user', ['name', 'avatar']) // go populate "user" (from Profile.js) grab "name" & "avatar" and dump into on JSON.
       .then(profile => {
         if (!profile){
           errors.noprofile = 'There is no profile for this user';
@@ -53,7 +53,7 @@ router.get('/all', (req, res) => {
     .catch(err => res.status(404).json({ profile: 'There are no profiles' }));
 });
 
-// @route   GET api/profile/handle/:handle
+// @route   GET api/profile/handle/:handle  => "GET api/profile/handle/" this is fixed. After ":", it can be changed.
 // @desc    Get profile by handle
 // @access  Public
 
@@ -73,7 +73,7 @@ router.get('/handle/:handle', (req, res) => {
     .catch(err => res.status(404).json(err));
 });
 
-// @route   GET api/profile/user/:user_id
+// @route   GET api/profile/user/:user_id  => :~ parameter name
 // @desc    Get profile by user ID
 // @access  Public
 
@@ -135,13 +135,13 @@ router.post(
     if (req.body.linkedin) profileFields.social.linkedin = req.body.linkedin;
     if (req.body.instagram) profileFields.social.instagram = req.body.instagram;   
     
-    Profile.findOne({ user: req.user.id })
+    Profile.findOne({ user: req.user.id }) // Check if the user exists.
     .then(profile => {
       if (profile) {
         // Update
-        Profile.findOneAndUpdate(
+        Profile.findOneAndUpdate( // findOneAndUpdate(uniq id,obj,is there new data?)
           { user: req.user.id },
-          { $set: profileFields },
+          { $set: profileFields }, // $set => go update this data.
           { new: true }
         ).then(profile => res.json(profile));
       } else {
@@ -191,7 +191,7 @@ router.post(
       };
 
       // Add to exp array
-      profile.experience.unshift(newExp);
+      profile.experience.unshift(newExp); //unshift: adding in front of elements
 
       profile.save().then(profile => res.json(profile));
     });
