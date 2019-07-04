@@ -104,7 +104,7 @@ router.post(
           // Add user id to likes array
           post.likes.unshift({ user: req.user.id });
 
-          post.save().then(post => res.json(post));
+          post.save().then(post => res.json(post));  // Don't forget to save it.
         })
         .catch(err => res.status(404).json({ postnotfound: 'No post found' }));
     });

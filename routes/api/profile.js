@@ -139,7 +139,7 @@ router.post(
     .then(profile => {
       if (profile) {
         // Update
-        Profile.findOneAndUpdate( // findOneAndUpdate(uniq id,obj,is there new data?)
+        Profile.findOneAndUpdate( // findOneAndUpdate(unique id,obj,is there new data?)
           { user: req.user.id },
           { $set: profileFields }, // $set => go update this data.
           { new: true }
