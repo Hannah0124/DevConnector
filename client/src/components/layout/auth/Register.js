@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import axios from 'axios';
 import classnames from 'classnames';
+import {registerUser} from '../../../actions/authActions';
+import { connect } from 'react-redux';
 
 class Register extends Component {
   constructor() {
@@ -37,19 +39,23 @@ class Register extends Component {
       password2: this.state.password2
     };
 
+    this.props.registerUser(newUser);
     // Ready to fire my API.
     // Client component is firing a call to the server side by passing this newUSer object above.
-    axios
-      .post('/api/users/register', newUser)
-      .then(res => console.log(res.data))
-      // I'm setting errors back into that err's object.
-      .catch(err => this.setState({errors: err.response.data}));
+    // axios
+    //   .post('/api/users/register', newUser)
+    //   .then(res => console.log(res.data))
+    //   // I'm setting errors back into that err's object.
+    //   .catch(err => this.setState({errors: err.response.data}));
   }
 
   render() {
+    const {user} = this.props.auth; // it could be this.props.xyz if I named it xyz below
     const {errors} = this.state; // deconstruction of "const errors = this.state.errors;"
     return (
       <div className="register">
+        {/* binding */}
+        {user? user.name : null}
       <div className="container">
         <div className="row">
           <div className="col-md-8 m-auto">
@@ -100,4 +106,10 @@ class Register extends Component {
   }
 }
 
-export default Register;
+const mapStateToProps = (state) => ({
+  auth: state.auth
+})
+
+// connect is a function
+// connent(??, what action to trigger, ??)
+export default connect(mapStateToProps, {registerUser})(Register);
