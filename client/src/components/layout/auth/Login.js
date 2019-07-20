@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import axios from 'axios';
 import classnames from 'classnames';
 
 
@@ -28,12 +27,6 @@ class Login extends Component {
       email: this.state.email,
       password: this.state.password
     };
-
-    // Ready to fire my API.
-    axios
-      .post('/api/users/login', newUser)
-      .then(res => console.log(res.data))
-      .catch(err => this.setState({errors: err.response.data}));
   }
 
   render() {

@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import axios from 'axios';
 import classnames from 'classnames';
-import {registerUser} from '../../../actions/authActions';
+import {registerUser} from '../../actions/authActions';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class Register extends Component {
   constructor() {
@@ -39,14 +39,14 @@ class Register extends Component {
       password2: this.state.password2
     };
 
-    this.props.registerUser(newUser);
-    // Ready to fire my API.
-    // Client component is firing a call to the server side by passing this newUSer object above.
-    // axios
-    //   .post('/api/users/register', newUser)
-    //   .then(res => console.log(res.data))
-    //   // I'm setting errors back into that err's object.
-    //   .catch(err => this.setState({errors: err.response.data}));
+    this.props.registerUser(newUser, this.props.history);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // When I receive next props with errors
+    if(nextProps.errors) {
+      this.setState({errors: nextProps.errors});
+    }
   }
 
   render() {
@@ -106,10 +106,19 @@ class Register extends Component {
   }
 }
 
+Register.propTypes = {
+  // I want function to be here
+  registerUser: PropTypes.func.isRequired,
+  // I want object to be here
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
+}
+
 const mapStateToProps = (state) => ({
-  auth: state.auth
-})
+  auth: state.auth,
+  errors: state.errors
+});
 
 // connect is a function
-// connent(??, what action to trigger, ??)
+// connent(what you need to read back from the store, what action to trigger)
 export default connect(mapStateToProps, {registerUser})(Register);
