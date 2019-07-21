@@ -18,10 +18,17 @@ export const registerUser = (userData, history) => dispatch => {
       );
 } 
 
+export const setCurrentUser = decoded => {
+  return {
+    type: SET_CURRENT_USER,
+    payload: decoded
+  }
+}
+
 export const loginUser = userdata => dispatch => {
   // Ready to fire my API.
   axios
-  .post('/api/users/login', newUser)
+  .post('/api/users/login', userdata)
   .then(res => {
     // Save to localstorage
     const {token} = res.data // deconstruction of const token = res.data.token
@@ -32,10 +39,7 @@ export const loginUser = userdata => dispatch => {
     // Decode token to get user data 
     const decoded = jwt_decode(token);
     // set current user 
-    dispatch({
-      type: SET_CURRENT_USER,
-      payload: decoded
-    })
+    dispatch(setCurrentUser(decoded))
     
   })
   .catch(err => 
@@ -44,4 +48,13 @@ export const loginUser = userdata => dispatch => {
       payload: err.response.data
     })
   );
+}
+
+export const logoutUser = () => dispatch => {
+  // Step1) Remove token from localstorage 
+  localStorage.removeItem('jwtToken');
+  // Step2) Remove token from auth headers
+  setAuthToken(false);
+  // Step3) Clean the user data from Redux store
+  dispatch(setCurrentUser({})); 
 }
