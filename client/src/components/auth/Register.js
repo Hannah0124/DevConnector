@@ -42,6 +42,12 @@ class Register extends Component {
     this.props.registerUser(newUser, this.props.history);
   }
 
+  componentDidMount() {
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push('/dashboard');
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     // When I receive next props with errors
     if(nextProps.errors) {
@@ -101,7 +107,7 @@ class Register extends Component {
         </div>
       </div>
     </div>
-    )
+    );
   }
 }
 
@@ -111,7 +117,7 @@ Register.propTypes = {
   // I want object to be here
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
-}
+};
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
