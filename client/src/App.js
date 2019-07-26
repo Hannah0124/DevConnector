@@ -66,7 +66,7 @@ function App() {
             <Route exact path="/profile/:handle" component={Profile} />
 
             <Switch> 
-              <PrivateRoute exact path="dashboard" component={Dashboard}/>
+              <PrivateRoute exact path="/dashboard" component={Dashboard}/>
             </Switch>
             <Switch> 
               <PrivateRoute exact path="/create-profile" component={CreateProfile}/>
