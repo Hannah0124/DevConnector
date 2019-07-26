@@ -8,6 +8,7 @@ const posts = require('./routes/api/posts');
 // If we bring it here (server.js), we don’t need to do every JS files.
 const bodyParser = require('body-parser');
 const passport = require('passport');
+const path = require('path');
 
 // Create an instance of the express() to tell my route to go to.
 // So you bring in everything from express().
@@ -49,9 +50,18 @@ app.use('/api/users', users);
 app.use('/api/profile', profile);
 app.use('/api/posts', posts);
 
+if (process.env.NODE_ENV === 'production'){
+  // set static folder
+  app.use(express.static('client/build'));
+
+  app.get('*', (req, res) =>{
+      res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
+}
+
 // How do I tell my <express> where (what port) to begin? 
 // Create port.
-const port = 5004;
+const port = process.env.PORT || 5004;
 // I’m going to tell my express to listen on the port (listen(port)) and
 // when you succeed (for listening), print out the following:
 app.listen(port, () => console.log(`Server is running on port ${port}`))
