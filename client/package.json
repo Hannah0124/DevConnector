@@ -19,19 +19,19 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "jest-w": "jest --watch",
+    "jest-w": "jest --watch",  
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://localhost:5004",
-  "devDependencies": {
-    "@babel/core": "^7.4.3",
-    "@babel/preset-env": "^7.4.3",
-    "@babel/preset-react": "^7.0.0",
-    "babel-jest": "^24.7.1",
-    "enzyme": "^3.9.0",
-    "enzyme-adapter-react-16": "^1.12.1",
-    "jest": "^24.7.1",
-    "react-test-renderer": "^16.8.6"
-  }
+  "proxy": "http://localhost:5004",  
+  "devDependencies": {  
+    "@babel/core": "^7.4.3",  
+    "@babel/preset-env": "^7.4.3",  
+    "@babel/preset-react": "^7.0.0",  
+    "babel-jest": "^24.7.1",  
+    "enzyme": "^3.9.0",  
+    "enzyme-adapter-react-16": "^1.12.1",  
+    "jest": "^24.7.1",  
+    "react-test-renderer": "^16.8.6"  
+  }  
 }
