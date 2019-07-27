@@ -40,7 +40,7 @@ require('./config/passport')(passport);
 // Go to <app (= express)>, add the route called <get> and say..
 // “If the user comes to the main page(‘/’), I gotta request(req) in, and respond(res) back saying(res.send) "Hello".
 // When I get to this route ('/'), I go into this function. 
-app.get('/', (req, res) => res.send('Hello world'));
+// app.get('/', (req, res) => res.send('Hello world'));
 
 
 // Add few more routes. (Call my users, profile, posts.)
