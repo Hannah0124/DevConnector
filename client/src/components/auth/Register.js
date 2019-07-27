@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {registerUser} from '../../actions/authActions';
-import { withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom'; 
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import TextFieldGroup from '../common/TextFieldGroup';
@@ -127,4 +127,4 @@ const mapStateToProps = (state) => ({
 
 // connect is a function
 // connent(what you need to read back from the store, what action to trigger)
-export default connect(mapStateToProps, {registerUser})(withRouter(Register));
+export default connect(mapStateToProps, {registerUser})(withRouter(Register)); 

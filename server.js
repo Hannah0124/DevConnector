@@ -61,7 +61,7 @@ if (process.env.NODE_ENV === 'production'){
 
 // How do I tell my <express> where (what port) to begin? 
 // Create port.
-const port = process.env.PORT || 6010;
+const port = process.env.PORT || 5004;
 // I’m going to tell my express to listen on the port (listen(port)) and
 // when you succeed (for listening), print out the following:
 app.listen(port, () => console.log(`Server is running on port ${port}`))
